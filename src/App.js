@@ -1,24 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
+import PhoneBook from './pages/phone-book/phone-book';
+import AddPhoneBook from './pages/add-phone-book/add-phone-book';
+import AddEntry from './pages/add-entry/add-entry';
 
-function App() {
+const App = () => {
+  const location = useLocation();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch location={location} key={location.pathname}>
+      <Route exact path="/" component={PhoneBook} />
+      <Route exact path="/add-entry" component={AddEntry} />
+      <Route exact path="/add-phone-book" component={AddPhoneBook} />
+    </Switch>
   );
 }
 
