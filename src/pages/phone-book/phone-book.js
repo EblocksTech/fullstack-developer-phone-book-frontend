@@ -1,28 +1,21 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { selectPhonebooks, selectSelectedPhonebook } from "../../redux/phonebook/phonebook.selectors";
+import { setSelectedPhonebook } from "../../redux/phonebook/phonebook.actions";
+
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import NumberList from "../../components/NumberList/NumberList";
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-const PhoneBook = () => {
-
-  const tempPhoneBooks = [
-    {id: 1, name: "All"},
-    {id: 2, name: "Neighbourhood"},
-    {id: 3, name: "Bussiness Associates"},
-    {id: 4, name: "Family"}
-  ];  
-
-  const [selectedBook, setSelectedBook] = useState(tempPhoneBooks[0].id);
+const PhoneBook = ({phonebooks,filter,selectedPhonebook}) => {          
 
   const handleChange = (event) => {
-    setSelectedBook(event.target.value);
+    filter(event.target.value);
   };
-
 
   return(
     <Grid
@@ -39,13 +32,13 @@ const PhoneBook = () => {
             <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={selectedBook}
+            value={selectedPhonebook}
             label="Phone Book"
             onChange={handleChange}
             >
               {
-                tempPhoneBooks.map((x, key) => <MenuItem value={x.id} key={key}> {x.name} </MenuItem>)
-              }
+                phonebooks.map((x, key) => <MenuItem value={x.id} key={key}> {x.name} </MenuItem>)
+              }              
             </Select>
           </FormControl>              
       </Grid>   
@@ -61,4 +54,14 @@ const PhoneBook = () => {
   )
 }
 
-export default PhoneBook
+const mapStateToProps = state => {
+  return ({
+    phonebooks: selectPhonebooks(state),
+    selectedPhonebook: selectSelectedPhonebook(state)
+  })
+}
+
+const mapDispatchToProps = dispatch => ({
+  filter: (phonebook) => dispatch(setSelectedPhonebook(phonebook))
+});
+export default connect(mapStateToProps, mapDispatchToProps)(PhoneBook)
