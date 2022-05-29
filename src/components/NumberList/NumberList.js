@@ -1,38 +1,43 @@
-import React from "react";
+import React, {useState} from "react";
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import ListItemText from '@mui/material/ListItemText';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import { connect } from "react-redux";
 
-function generate(element) {
-  return [0, 1, 2].map((value) =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-}
+import { selectedPhonebookEntries } from "../../redux/entries/entries.selectors";
+import { selectFilterString } from "../../redux/entries/entries.selectors";
 
 const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-const NumberList = () => {
+const NumberList = ({entries, filterString}) => {
+  
+  const filteredEntries = entries.filter(x => {
+    return x.name.toLowerCase().includes(filterString.toLowerCase());
+  });
   return(          
     <Demo>
       <List dense={true}>
-        {generate(
-          <ListItem>
-            <ListItemText
-              primary="Single-line item"
-              secondary="Secondary text"
-            />
-          </ListItem>
-        )}
+        {
+          filteredEntries.map((x, key) => 
+            <ListItem key={key}>
+              <ListItemText primary={x.name} secondary={x.number} key={key}/>
+            </ListItem>
+          )
+        }
       </List>
-    </Demo>
-  
+    </Demo>  
   );
 }
 
-export default NumberList;
+const mapStateToProps = state => {
+  return ({
+    entries: selectedPhonebookEntries(state),
+    filterString: selectFilterString(state)
+  })
+}
+
+export default connect(mapStateToProps)(NumberList);

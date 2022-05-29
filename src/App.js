@@ -1,12 +1,20 @@
-import logo from './logo.svg';
+import { connect } from 'react-redux';
+import {useEffect } from "react";
 import './App.css';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom'
 import PhoneBook from './pages/phone-book/phone-book';
 import AddPhoneBook from './pages/add-phone-book/add-phone-book';
 import AddEntry from './pages/add-entry/add-entry';
+import { fetchPhonebooks } from './redux/phonebook/phonebook.actions';
+import { fetchEntries } from './redux/entries/entries.actions';
 
-const App = () => {
+const App = ({getPhonebooks,getEntries}) => {
   const location = useLocation();
+
+  useEffect(() => {    
+    getEntries();
+    getPhonebooks();    
+  }, []);
 
   return (
     <Switch location={location} key={location.pathname}>
@@ -17,4 +25,9 @@ const App = () => {
   );
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  getPhonebooks: () => dispatch(fetchPhonebooks()),
+  getEntries: () => dispatch(fetchEntries())
+});
+
+export default connect(null, mapDispatchToProps)(App);
