@@ -10,17 +10,17 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CustomButton from "../../components/CustomButtom/CustomButton";
 
-import { selectPhonebooks } from "../../redux/phonebook/phonebook.selectors";
+import { selectPhonebooks, selectSelectedPhonebook } from "../../redux/phonebook/phonebook.selectors";
 import { addEntry } from "../../redux/entries/entries.actions";
+import { setSelectedPhonebook } from "../../redux/phonebook/phonebook.actions";
 
-const AddEntry = ({phonebooks, addEntry}) => {
+const AddEntry = ({phonebooks, addEntry, selected, setPhoneBook}) => {
   let history = useHistory();
-  const [selectedBook, setSelectedBook] = useState(phonebooks[0].id);
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
-  const handleChange = (event) => {
-    setSelectedBook(event.target.value);
+  const handleChange = (event) => {       
+    setPhoneBook(event.target.value);
   };
 
   const handleNameChange = (event) => {
@@ -35,9 +35,11 @@ const AddEntry = ({phonebooks, addEntry}) => {
     const entry = {
       name: name,
       number: number,
-      phonebookId: selectedBook.id
-    }
+      phonebookId: selected
+    }    
     addEntry(entry);
+    setName("");
+    setNumber("");
   }
 
   const handleCancel = () => {
@@ -63,7 +65,7 @@ const AddEntry = ({phonebooks, addEntry}) => {
             <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={selectedBook}
+            value={selected}
             label="Phone Book"
             onChange={handleChange}
             >
@@ -99,10 +101,12 @@ const AddEntry = ({phonebooks, addEntry}) => {
 
 const mapStateToProps = state => ({
   phonebooks: selectPhonebooks(state),  
+  selected: selectSelectedPhonebook(state)
 }); 
 
 const mapDispatchToProps = dispatch => ({
-  addEntry: (entry) => dispatch(addEntry(entry))
+  addEntry: entry => dispatch(addEntry(entry)),
+  setPhoneBook: id => dispatch(setSelectedPhonebook(id))
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(AddEntry)

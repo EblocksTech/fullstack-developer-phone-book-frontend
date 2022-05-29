@@ -70,4 +70,5 @@ const mapDispatchToProps = dispatch => ({
   filterBook: (phonebook) => dispatch(setSelectedPhonebook(phonebook)),
   filterString: (string) => dispatch(updateFilterString(string))
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(PhoneBook)

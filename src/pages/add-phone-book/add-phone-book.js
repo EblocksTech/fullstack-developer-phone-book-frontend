@@ -15,6 +15,7 @@ const AddPhoneBook = ({addPhonebook}) => {
 
   const handleSave = () => {
     addPhonebook(name);
+    setName("");
   }
 
   const handleCancel = () => {

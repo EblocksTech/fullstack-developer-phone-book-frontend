@@ -3,7 +3,7 @@ import entriesActionTypes from "./entries.types";
 const INITIAL_STATE = {
   entries: [],
   filteredEntries: [],
-  filterString: ""
+  filterString: "",  
 }
 
 const entriesReducer = (state = INITIAL_STATE, action) => {  

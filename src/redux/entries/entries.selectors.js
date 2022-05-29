@@ -25,3 +25,8 @@ export const selectFilterString = createSelector(
   [selectEntries],
   (entries) => entries.filterString
 );
+
+export const selectSelectedPhonebook = createSelector(
+ [selectEntries] ,
+ (entries) => entries.selectedBook
+);

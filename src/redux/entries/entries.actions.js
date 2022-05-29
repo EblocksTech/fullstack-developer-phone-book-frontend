@@ -22,3 +22,11 @@ export const addEntry = entry => ({
   type: entriesActionTypes.ADD_ENTRY_START,
   payload: entry
 });
+
+export const addEntrySuccess = () => ({
+  type: entriesActionTypes.ADD_ENTRY_SUCCESS
+});
+
+export const addEntryFail = () => ({
+  type: entriesActionTypes.ADD_ENTRY_FAILURE
+});

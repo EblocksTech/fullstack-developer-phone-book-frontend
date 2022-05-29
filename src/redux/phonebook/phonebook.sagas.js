@@ -5,7 +5,6 @@ import axios from 'axios';
 import { push } from "connected-react-router";
 
 import phonebookActionTypes from './phonebook.types';
-import addPhoneBook from '../../pages/add-phone-book/add-phone-book';
 
 
 export function* fetchPhonebooksAsync(){
@@ -14,13 +13,12 @@ export function* fetchPhonebooksAsync(){
     yield put(fetchPhonebooksSuccess(phonebooks.data));      
   } catch (error) {
       yield put(fetchPhonebooksFailure());
-
   }
 }
 
 export function* addPhoneBookAsync({payload}) {
-  try {
-    const addOpperation = yield axios.post("https://localhost:5001/phonebooks", {name: payload});    
+  try {    
+    const addOpperation = yield axios.post("https://localhost:5001/phonebooks", {name: payload});        
     yield put(addPhoneBookSuccess());
     yield put(fetchPhonebooks())
     yield put(push('/'));
@@ -40,6 +38,6 @@ export function* onAddPhonebook() {
 export function* phonebookSagas() {
   yield all([
     call(onFetchPhonebookStart),
-    call(onAddPhonebook)
+    call(onAddPhonebook),    
   ])
 }

@@ -3,7 +3,8 @@ import axios from 'axios';
 import { push } from "connected-react-router";
 
 import entriesActionTypes from './entries.types';
-import { fetchEntriesSuccess, fetchEntriesFailure, fetchEntries } from './entries.actions';
+import { fetchEntriesSuccess, fetchEntriesFailure, fetchEntries, addEntrySuccess, addEntryFail } from './entries.actions';
+
 
 export function* fetchEntriesAsync() {
   try {    
@@ -17,10 +18,11 @@ export function* fetchEntriesAsync() {
 export function* addEntryAsync({payload}) {
   try {    
     const opperation = yield axios.post("https://localhost:5001/entries", payload);   
+    yield put(addEntrySuccess());
     yield put(fetchEntries());    
     yield put(push('/')); 
   } catch (error) {
-    yield put(fetchEntriesFailure());     
+    yield put(addEntryFail());     
   }
 }
 
@@ -35,6 +37,7 @@ export function* onAddEntryStart( ){
 
 export function* entriesSagas() {
   yield all([
-    call(onFetchEntriesStart)
+    call(onFetchEntriesStart),
+    call(onAddEntryStart)
   ])
 }

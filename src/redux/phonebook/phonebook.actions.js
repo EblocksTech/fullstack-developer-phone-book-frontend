@@ -30,4 +30,3 @@ export const addPhoneBookSuccess = () => ({
 export const addPhoneBookFailure = () => ({
   type: phonebookActionTypes.ADD_PHONEBOOK_FAILURE
 });
-
