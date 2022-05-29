@@ -1,5 +1,6 @@
-import { useState } from "react";
-import Paper from '@mui/material/Paper';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -9,20 +10,39 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import CustomButton from "../../components/CustomButtom/CustomButton";
 
-const AddEntry = () => {
-  
-  const tempPhoneBooks = [
-    {id: 1, name: "Neighbourhood"},
-    {id: 2, name: "Bussiness Associates"},
-    {id: 3, name: "Family"}
-  ];  
+import { selectPhonebooks } from "../../redux/phonebook/phonebook.selectors";
+import { addEntry } from "../../redux/entries/entries.actions";
 
-  const [selectedBook, setSelectedBook] = useState(tempPhoneBooks[0].id);
+const AddEntry = ({phonebooks, addEntry}) => {
+  let history = useHistory();
+  const [selectedBook, setSelectedBook] = useState(phonebooks[0].id);
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
 
   const handleChange = (event) => {
     setSelectedBook(event.target.value);
   };
 
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleNumberChange = (event) => {
+    setNumber(event.target.value);
+  };
+
+  const handleSave = () => {
+    const entry = {
+      name: name,
+      number: number,
+      phonebookId: selectedBook.id
+    }
+    addEntry(entry);
+  }
+
+  const handleCancel = () => {
+    history.push("/");
+  }
   return(
     <Grid
       container
@@ -48,28 +68,28 @@ const AddEntry = () => {
             onChange={handleChange}
             >
               {
-                tempPhoneBooks.map((x, key) => <MenuItem value={x.id} key={key}> {x.name} </MenuItem>)
+                phonebooks.map((x, key) => <MenuItem value={x.id} key={key}> {x.name} </MenuItem>)
               }
             </Select>
           </FormControl>              
       </Grid>    
       <Grid item md={6} style={{marginBottom: "50px"}}>
         <FormControl>          
-          <TextField id="text-name" label="Name" variant="standard" />
+          <TextField id="text-name" label="Name" variant="standard" value={name} onChange={handleNameChange} />
         </FormControl>     
       </Grid>
       <Grid item md={6} style={{marginBottom: "50px"}}>
         <FormControl>          
-          <TextField id="text-number" label="Number" variant="standard" />
+          <TextField id="text-number" label="Number" variant="standard" value={number} onChange={handleNumberChange} />
         </FormControl>     
       </Grid>
       <Grid item md={6}>
         <Grid container direction="row" spacing={4}>
           <Grid item >
-            <CustomButton variant="contained" size="small" >Save</CustomButton>
+            <CustomButton variant="contained" size="small" onClick={handleSave} >Save</CustomButton>
           </Grid>
           <Grid item>
-            <CustomButton variant="contained" size="small" color="error">Cancel</CustomButton>
+            <CustomButton variant="contained" size="small" color="error" onClick={handleCancel}>Cancel</CustomButton>
           </Grid>
         </Grid>
       </Grid>
@@ -77,4 +97,12 @@ const AddEntry = () => {
   );
 }
 
-export default AddEntry
+const mapStateToProps = state => ({
+  phonebooks: selectPhonebooks(state),  
+}); 
+
+const mapDispatchToProps = dispatch => ({
+  addEntry: (entry) => dispatch(addEntry(entry))
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddEntry)

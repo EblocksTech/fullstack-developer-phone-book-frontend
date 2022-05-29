@@ -18,3 +18,7 @@ export const updateFilterString = (string) => ({
   payload: string
 });
 
+export const addEntry = entry => ({
+  type: entriesActionTypes.ADD_ENTRY_START,
+  payload: entry
+});

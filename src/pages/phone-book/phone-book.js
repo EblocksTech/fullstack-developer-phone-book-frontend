@@ -60,12 +60,11 @@ const PhoneBook = ({phonebooks,filterBook,filterString,selectedPhonebook}) => {
   )
 }
 
-const mapStateToProps = state => {
-  return ({
+const mapStateToProps = state => ({
     phonebooks: selectPhonebooks(state),
     selectedPhonebook: selectSelectedPhonebook(state),    
-  })
-}
+}); 
+
 
 const mapDispatchToProps = dispatch => ({
   filterBook: (phonebook) => dispatch(setSelectedPhonebook(phonebook)),
