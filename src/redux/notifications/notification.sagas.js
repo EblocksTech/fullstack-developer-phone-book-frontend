@@ -21,7 +21,7 @@ export function* addEntrySuccess(){
 }
 
 export function* addEntryFail(){
-  yield put(pushNotification({title: `Success`, message: "Entry Creation Failed", id: uniqid(), level: "error"}));
+  yield put(pushNotification({title: `Error`, message: "Entry Creation Failed", id: uniqid(), level: "error"}));
 }
 
 export function* onAddPhonebook(){

@@ -1,5 +1,5 @@
 const config = {
-  baseUrl: "http://absa-api:80"
+  baseUrl: "http://localhost:8000"
 }
 
 export default config;
