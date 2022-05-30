@@ -1,0 +1,12 @@
+version : '3'
+services:
+  absa-front:
+    container_name: absa-frontend
+    build: .
+    ports: 
+      - 8080:3000  
+    
+networks: 
+  default: 
+    external: 
+      name: absa-network 

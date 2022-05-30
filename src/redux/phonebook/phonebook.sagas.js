@@ -5,11 +5,11 @@ import axios from 'axios';
 import { push } from "connected-react-router";
 
 import phonebookActionTypes from './phonebook.types';
-
+import config from "../../env";
 
 export function* fetchPhonebooksAsync(){
   try {            
-    const phonebooks = yield axios.get("https://localhost:5001/phonebooks");        
+    const phonebooks = yield axios.get(`${config.baseUrl}/phonebooks`);        
     yield put(fetchPhonebooksSuccess(phonebooks.data));      
   } catch (error) {
       yield put(fetchPhonebooksFailure());
@@ -18,7 +18,7 @@ export function* fetchPhonebooksAsync(){
 
 export function* addPhoneBookAsync({payload}) {
   try {    
-    const addOpperation = yield axios.post("https://localhost:5001/phonebooks", {name: payload});        
+    const addOpperation = yield axios.post(`${config.baseUrl}/phonebooks`, {name: payload});        
     yield put(addPhoneBookSuccess());
     yield put(fetchPhonebooks())
     yield put(push('/'));

@@ -4,11 +4,11 @@ import { push } from "connected-react-router";
 
 import entriesActionTypes from './entries.types';
 import { fetchEntriesSuccess, fetchEntriesFailure, fetchEntries, addEntrySuccess, addEntryFail } from './entries.actions';
-
+import config from "../../env";
 
 export function* fetchEntriesAsync() {
   try {    
-    const entries = yield axios.get("https://localhost:5001/entries");   
+    const entries = yield axios.get(`${config.baseUrl}/entries`);   
     yield put(fetchEntriesSuccess(entries.data));     
   } catch (error) {
     yield put(fetchEntriesFailure());     
@@ -17,7 +17,7 @@ export function* fetchEntriesAsync() {
 
 export function* addEntryAsync({payload}) {
   try {    
-    const opperation = yield axios.post("https://localhost:5001/entries", payload);   
+    const opperation = yield axios.post(`${config.baseUrl}/entries`, payload);   
     yield put(addEntrySuccess());
     yield put(fetchEntries());    
     yield put(push('/')); 
