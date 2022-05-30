@@ -6,7 +6,7 @@ const error = css`
 `;
 
 const info = css`
-  background-color: #4285f4;
+  background-color: #4BB543;
 `;
 
 
